@@ -92,7 +92,6 @@ segment = alt.Chart(df_group_3, title='Customer Segmentation by RFM Value').mark
     alt.X('distinct(Customer ID):Q'),
     color = alt.condition(pts, alt.Color('distinct(Customer ID):Q'), alt.value("grey")),
     tooltip=['RFM Level', 'count(Customer ID)']
-
 ).add_selection(pts
 ).add_selection(ad_selec
 ).transform_filter(ad_selec)
