@@ -123,12 +123,4 @@ g_orders = alt.Chart(df_group_3, title='Customer by Orders').mark_bar(color='mar
 ).add_selection(ad_selec
 ).transform_filter(ad_selec)
 
-#RFM Heatmap
-heat = alt.Chart(df_group_3, title='RFM Heatmap').mark_rect(color='maroon').encode(
-    alt.X('Frequency', bin=alt.Bin(maxbins=4)),
-    alt.Y('Recency'),
-    alt.Color('mean(Monetary Value)')
-).add_selection(ad_selec
-).transform_filter(ad_selec)
-
-alt.vconcat(g_mon,  g_orders | segment, heat)
+alt.vconcat (segment, g_mon | g_orders, center=True)
