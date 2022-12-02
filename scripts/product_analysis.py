@@ -41,14 +41,14 @@ g_1 = alt.Chart(df_group_1).mark_bar(color='maroon').encode(
 
 
 #Total sales across months
-g_2 = alt.Chart(df_group_1).mark_line(color='black', interpolate='monotone').encode(
+g_2 = alt.Chart(df_group_1).mark_line(color='black', interpolate='monotone', strokeDash=[10, 10]).encode(
     alt.X('yearmonth(Date):T',
         axis = alt.Axis(title = 'Date', tickCount=5)),
     alt.Y('sum(Quantity):Q',
         axis = alt.Axis(title = 'Total Items Purchased', labelColor='black', titleColor='black')),
     tooltip = ('yearmonth(Date):T', 'sum(Quantity):Q', 'sum(Sales)'))
 
-point_1 = g_2.mark_circle(color='goldenrod').encode(
+point_1 = g_2.mark_circle(color='black').encode(
     opacity = alt.value(1))
 
 
@@ -56,7 +56,8 @@ point_1 = g_2.mark_circle(color='goldenrod').encode(
 sales_purch = alt.layer(g_1, g_2+point_1).resolve_scale(
     y = 'independent' 
 ).properties(
-    title = "Total Sales and Total Items Purchased Across Months"
+    title = "Total Sales and Total Items Purchased Across Months",
+    height= 300, width = 300
 ).add_selection(ad_selec
 ).transform_filter(
     ad_selec)
@@ -70,14 +71,14 @@ g_3 = alt.Chart(df_group_1).mark_bar(color='maroon').encode(
     tooltip = ('yearmonth(Date):T', 'sum(Quantity):Q', 'average(Price):Q'))
 
 #average product price across months
-g_4 = alt.Chart(df_group_1).mark_line(color='black', interpolate='monotone', ).encode(
+g_4 = alt.Chart(df_group_1).mark_line(color='black', interpolate='monotone', strokeDash=[10, 10] ).encode(
     alt.X('yearmonth(Date):T',
         axis = alt.Axis(title = 'Date')),
     alt.Y('average(Price):Q',
         axis = alt.Axis(title = 'Price',  labelColor='black', titleColor='black')),
      tooltip = ('yearmonth(Date):T', 'sum(Quantity):Q', 'average(Price):Q'))
 
-point_2 = g_4.mark_circle(color='goldenrod').encode(
+point_2 = g_4.mark_circle(color='black').encode(
     opacity = alt.value(1))
 
 
@@ -85,7 +86,8 @@ point_2 = g_4.mark_circle(color='goldenrod').encode(
 purch_price = alt.layer(g_3, g_4 + point_2).resolve_scale(
     y = 'independent' 
 ).properties(
-    title = "Total Items Purchased and Average Price  Across Months").interactive(
+    title = "Total Items Purchased and Average Price  Across Months",
+    height= 300, width = 300).interactive(
 ).add_selection(ad_selec
 ).transform_filter(
     ad_selec)
@@ -99,14 +101,14 @@ g_5 = alt.Chart(df_group_1).mark_bar(color='maroon').encode(
     tooltip = ('yearmonth(Date):T', 'distinct(Item Name):N', 'sum(Quantity):Q')
 ).properties(title='Total Customer and Quantity Purchases Accros Month ')
 
-#combine Product and Average price across months
+#combine Product andAverage price across months
 prod_price = alt.layer(g_5, g_4 + point_2).resolve_scale(
     y = 'independent',
 ).properties(
-    title = "Product Purchased and Average Price Across Months").interactive(
+    title = "Product Purchased and Average Price Across Months",
+    height= 300, width = 300).interactive(
 ).add_selection(ad_selec
 ).transform_filter(
     ad_selec)
 
 alt.vconcat(sales_purch|purch_price|prod_price )
-
