@@ -70,90 +70,80 @@ df_group_3["RFM Score"] = (
 )
 
 # categorize the customer based on RFM value
-champions = ["444"]
-loyal_customers = ["334", "342", "343", "344", "433", "434", "443"]
-potential_loyalist = [
-    "332",
-    "333",
-    "341",
-    "412",
-    "413",
-    "414",
-    "431",
-    "432",
-    "441",
-    "442",
-    "421",
-    "422",
-    "423",
-    "424",
-]
-recent_customers = ["411"]
-promising = ["311", "312", "313", "331"]
-needing_attention = [
-    "212",
-    "213",
-    "214",
-    "231",
-    "232",
-    "233",
-    "241",
-    "314",
-    "321",
-    "322",
-    "323",
-    "324",
-]
-about_to_sleep = ["211"]
-at_risk = [
-    "112",
-    "113",
-    "114",
-    "131",
-    "132",
-    "133",
-    "142",
-    "124",
-    "123",
-    "122",
-    "121",
-    "224",
-    "223",
-    "222",
-    "221",
-]
-cant_lose = ["134", "143", "144", "234", "242", "243", "244"]
-hibernating = ["141"]
-lost = ["111"]
+status_name = {
+    "444": "Champions",
+    "334": "Loyal Customers",
+    "342": "Loyal Customers",
+    "343": "Loyal Customers",
+    "344": "Loyal Customers",
+    "433": "Loyal Customers",
+    "434": "Loyal Customers",
+    "443": "Loyal Customers",
+    "332": "Potential Loyalist",
+    "333": "Potential Loyalist",
+    "341": "Potential Loyalist",
+    "412": "Potential Loyalist",
+    "413": "Potential Loyalist",
+    "414": "Potential Loyalist",
+    "431": "Potential Loyalist",
+    "432": "Potential Loyalist",
+    "441": "Potential Loyalist",
+    "442": "Potential Loyalist",
+    "421": "Potential Loyalist",
+    "422": "Potential Loyalist",
+    "423": "Potential Loyalist",
+    "424": "Potential Loyalist",
+    "411": "Recent Customers",
+    "311": "Promising",
+    "312": "Promising",
+    "313": "Promising",
+    "331": "Promising",
+    "212": "Needing Atention",
+    "213": "Needing Atention",
+    "214": "Needing Atention",
+    "231": "Needing Atention",
+    "232": "Needing Atention",
+    "233": "Needing Atention",
+    "241": "Needing Atention",
+    "314": "Needing Atention",
+    "321": "Needing Atention",
+    "322": "Needing Atention",
+    "323": "Needing Atention",
+    "324": "Needing Atention",
+    "211": "About to Sleep",
+    "112": "At Risk",
+    "113": "At Risk",
+    "114": "At Risk",
+    "131": "At Risk",
+    "132": "At Risk",
+    "133": "At Risk",
+    "142": "At Risk",
+    "124": "At Risk",
+    "123": "At Risk",
+    "122": "At Risk",
+    "121": "At Risk",
+    "224": "At Risk",
+    "223": "At Risk",
+    "222": "At Risk",
+    "221": "At Risk",
+    "134": "Cant Lose",
+    "143": "Cant Lose",
+    "144": "Cant Lose",
+    "234": "Cant Lose",
+    "242": "Cant Lose",
+    "243": "Cant Lose",
+    "244": "Cant Lose",
+    "141": "Hibernating",
+    "111": "Lost",
+}
 
 
-def rfm_level(df):
-    if df["RFM Score"] in champions:
-        return "Champions"
-    elif df["RFM Score"] in loyal_customers:
-        return "Loyal Customers"
-    elif df["RFM Score"] in potential_loyalist:
-        return "Potential Loyalist"
-    elif df["RFM Score"] in recent_customers:
-        return "Recent Customers"
-    elif df["RFM Score"] in promising:
-        return "Promising"
-    elif df["RFM Score"] in needing_attention:
-        return "Needing Attention"
-    elif df["RFM Score"] in about_to_sleep:
-        return "About to Sleep"
-    elif df["RFM Score"] in at_risk:
-        return "At Risk"
-    elif df["RFM Score"] in cant_lose:
-        return "Cant Lose"
-    elif df["RFM Score"] in hibernating:
-        return "Hibernating"
-    elif df["RFM Score"] in lost:
-        return "Lost"
+def status(x):
+    return status_name.get(x, "None")
 
 
 # Create a new variable RFM_Level
-df_group_3["RFM Level"] = df_group_3.apply(rfm_level, axis=1)
+df_group_3["RFM Level"] = df_group_3["RFM Score"].apply(status)
 
 # add bin and selection
 pts = alt.selection_multi(encodings=["y"])
