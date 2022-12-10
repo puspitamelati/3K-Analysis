@@ -169,46 +169,37 @@ segment = (
     .properties(height=250, width=400)
 )
 
-# Customer Monatary Value
-g_mon = (
-    alt.Chart(df_group_3, title="Customer Monatary Value")
-    .mark_bar(color="maroon")
-    .encode(
-        alt.X("Monetary Value", bin=alt.Bin(maxbins=20)),
-        alt.Y("distinct(Customer ID):Q"),
+# function for generate graph
+def chart(x, y, agg, tipe, title):
+    return (
+        alt.Chart(df_group_3, title=title)
+        .mark_bar(color="maroon")
+        .encode(
+            alt.X(x, bin=alt.Bin(maxbins=20)),
+            alt.Y(y, aggregate=agg, type=tipe),
+        )
+        .add_selection(pts)
+        .transform_filter(pts)
+        .add_selection(ad_selec)
+        .transform_filter(ad_selec)
     )
-    .add_selection(pts)
-    .transform_filter(pts)
-    .add_selection(ad_selec)
-    .transform_filter(ad_selec)
-)
 
-# Customer Recency
-g_recen = (
-    alt.Chart(df_group_3, title="Customer Recency")
-    .mark_bar(color="maroon")
-    .encode(
-        alt.X("Recency", bin=alt.Bin(step=20), title="Number of Days"),
-        alt.Y("count(Customer ID)"),
-    )
-    .add_selection(pts)
-    .transform_filter(pts)
-    .add_selection(ad_selec)
-    .transform_filter(ad_selec)
+
+# Customer Monatary Value
+g_mon = chart(
+    "Monetary Value",
+    "Customer ID",
+    "distinct",
+    "quantitative",
+    "Customer Monatary Value",
 )
 
 # Customer by Orders
-g_orders = (
-    alt.Chart(df_group_3, title="Customer by Orders")
-    .mark_bar(color="maroon")
-    .encode(
-        alt.X("Quantity", title="Number of Purchase", bin=alt.Bin(step=2)),
-        alt.Y("count(Customer ID)"),
-    )
-    .add_selection(pts)
-    .transform_filter(pts)
-    .add_selection(ad_selec)
-    .transform_filter(ad_selec)
+g_orders = chart(
+    "Quantity", 
+    "Customer ID", 
+    "count", "quantitative", 
+    "Customer by Orders"
 )
 
 alt.vconcat(segment, g_mon | g_orders, center=True)
