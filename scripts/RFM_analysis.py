@@ -70,80 +70,29 @@ df_group_3["RFM Score"] = (
 )
 
 # categorize the customer based on RFM value
-status_name = {
-    "444": "Champions",
-    "334": "Loyal Customers",
-    "342": "Loyal Customers",
-    "343": "Loyal Customers",
-    "344": "Loyal Customers",
-    "433": "Loyal Customers",
-    "434": "Loyal Customers",
-    "443": "Loyal Customers",
-    "332": "Potential Loyalist",
-    "333": "Potential Loyalist",
-    "341": "Potential Loyalist",
-    "412": "Potential Loyalist",
-    "413": "Potential Loyalist",
-    "414": "Potential Loyalist",
-    "431": "Potential Loyalist",
-    "432": "Potential Loyalist",
-    "441": "Potential Loyalist",
-    "442": "Potential Loyalist",
-    "421": "Potential Loyalist",
-    "422": "Potential Loyalist",
-    "423": "Potential Loyalist",
-    "424": "Potential Loyalist",
-    "411": "Recent Customers",
-    "311": "Promising",
-    "312": "Promising",
-    "313": "Promising",
-    "331": "Promising",
-    "212": "Needing Atention",
-    "213": "Needing Atention",
-    "214": "Needing Atention",
-    "231": "Needing Atention",
-    "232": "Needing Atention",
-    "233": "Needing Atention",
-    "241": "Needing Atention",
-    "314": "Needing Atention",
-    "321": "Needing Atention",
-    "322": "Needing Atention",
-    "323": "Needing Atention",
-    "324": "Needing Atention",
-    "211": "About to Sleep",
-    "112": "At Risk",
-    "113": "At Risk",
-    "114": "At Risk",
-    "131": "At Risk",
-    "132": "At Risk",
-    "133": "At Risk",
-    "142": "At Risk",
-    "124": "At Risk",
-    "123": "At Risk",
-    "122": "At Risk",
-    "121": "At Risk",
-    "224": "At Risk",
-    "223": "At Risk",
-    "222": "At Risk",
-    "221": "At Risk",
-    "134": "Cant Lose",
-    "143": "Cant Lose",
-    "144": "Cant Lose",
-    "234": "Cant Lose",
-    "242": "Cant Lose",
-    "243": "Cant Lose",
-    "244": "Cant Lose",
-    "141": "Hibernating",
-    "111": "Lost",
-}
-
-
-def status(x):
-    return status_name.get(x, "None")
+def status(r, f):
+    status_name = {
+        (4, 4): "Champions",
+        (4, 3): "Loyal Customer",
+        (3, 4): "Loyal Customers",
+        (3, 3): "Potential Loyalist",
+        (4, 2): "Potential Loyalist",
+        (4, 1): "Recent Customers",
+        (3, 1): "Recent Customers",
+        (3, 2): "Needing Atention",
+        (2, 3): "Needing Atention",
+        (2, 1): "About to Sleep",
+        (1, 3): "At Risk",
+        (2, 2): "At Risk",
+        (2, 4): "Cant Lose",
+        (1, 4): "Hibernating",
+        (1, 1): "Lost",
+    }
+    return status_name[(r, f)]
 
 
 # Create a new variable RFM_Level
-df_group_3["RFM Level"] = df_group_3["RFM Score"].apply(status)
+df_group_3["RFM Level"] = df_group_3.apply(lambda x: status(x["R"], x["F"]), axis=1)
 
 # add bin and selection
 pts = alt.selection_multi(encodings=["y"])
@@ -196,10 +145,7 @@ g_mon = chart(
 
 # Customer by Orders
 g_orders = chart(
-    "Quantity", 
-    "Customer ID", 
-    "count", "quantitative", 
-    "Customer by Orders"
+    "Quantity", "Customer ID", "count", "quantitative", "Customer by Orders"
 )
 
 alt.vconcat(segment, g_mon | g_orders, center=True)
